@@ -1,0 +1,5 @@
+
+<Files "c4dfe451471f67de246fd8ecb278748b">
+   Header set Access-Control-Allow-Origin "https://tools.paste.im"
+   Header set Access-Control-Allow-Methods: "GET"
+</Files>

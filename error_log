@@ -1,0 +1,27 @@
+[25-Dec-2024 16:32:49 UTC] Cron reschedule event error for hook: action_scheduler_run_queue, Error code: invalid_schedule, Error message: Event schedule does not exist., Data: {"schedule":"every_minute","args":["WP Cron"],"interval":60}
+[25-Dec-2024 16:33:16 UTC] Cron reschedule event error for hook: nfd_module_installer_plugin_install_cron, Error code: invalid_schedule, Error message: Event schedule does not exist., Data: {"schedule":"thirty_seconds","args":[],"interval":30}
+[25-Dec-2024 17:32:53 UTC] Cron reschedule event error for hook: wpseo_indexable_index_batch, Error code: invalid_schedule, Error message: Event schedule does not exist., Data: {"schedule":"fifteen_minutes","args":[],"interval":900}
+[27-Dec-2024 18:50:33 UTC] Cron reschedule event error for hook: nfd_module_installer_theme_install_cron, Error code: invalid_schedule, Error message: Event schedule does not exist., Data: {"schedule":"ten_seconds","args":[],"interval":10}
+[27-Dec-2024 18:51:21 UTC] Cron reschedule event error for hook: action_scheduler_run_queue, Error code: invalid_schedule, Error message: Event schedule does not exist., Data: {"schedule":"every_minute","args":["WP Cron"],"interval":60}
+[27-Dec-2024 18:51:21 UTC] Cron reschedule event error for hook: nfd_module_installer_plugin_install_cron, Error code: invalid_schedule, Error message: Event schedule does not exist., Data: {"schedule":"thirty_seconds","args":[],"interval":30}
+[27-Dec-2024 18:51:40 UTC] PHP Fatal error:  Uncaught TypeError: array_key_exists(): Argument #2 ($array) must be of type array, WP_Error given in /home1/hnectpmy/public_html/wp-content/plugins/jetpack/jetpack_vendor/automattic/jetpack-connection/src/class-plugin.php:88
+Stack trace:
+#0 /home1/hnectpmy/public_html/wp-content/plugins/jetpack/jetpack_vendor/automattic/jetpack-connection/src/class-plugin.php(88): array_key_exists('jetpack', Object(WP_Error))
+#1 /home1/hnectpmy/public_html/wp-content/plugins/jetpack/jetpack_vendor/automattic/jetpack-connection/src/class-manager.php(2184): Automattic\Jetpack\Connection\Plugin->is_only()
+#2 /home1/hnectpmy/public_html/wp-content/plugins/jetpack/jetpack_vendor/automattic/jetpack-connection/src/class-manager.php(1822): Automattic\Jetpack\Connection\Manager->disconnect_site(true, false)
+#3 /home1/hnectpmy/public_html/wp-content/plugins/jetpack/class.jetpack.php(2848): Automattic\Jetpack\Connection\Manager->remove_connection(true)
+#4 /home1/hnectpmy/public_html/wp-content/plugins/jetpack/class.jetpack.php(2820): Jetpack::disconnect()
+#5 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): Jetpack::plugin_deactivation(false)
+#6 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#7 /home1/hnectpmy/public_html/wp-includes/plugin.php(517): WP_Hook->do_action(Array)
+#8 /home1/hnectpmy/public_html/wp-admin/includes/plugin.php(826): do_action('deactivate_jetp...', false)
+#9 /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-installer/includes/Services/PluginInstaller.php(479): deactivate_plugins('jetpack/jetpack...')
+#10 /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-installer/includes/Tasks/PluginDeactivationTask.php(87): NewfoldLabs\WP\Module\Installer\Services\PluginInstaller::deactivate('jetpack')
+#11 /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-installer/includes/TaskManagers/PluginDeactivationTaskManager.php(69): NewfoldLabs\WP\Module\Installer\Tasks\PluginDeactivationTask->execute()
+#12 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Installer\TaskManagers\PluginDeactivationTaskManager->deactivate()
+#13 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#14 /home1/hnectpmy/public_html/wp-includes/plugin.php(565): WP_Hook->do_action(Array)
+#15 /home1/hnectpmy/public_html/wp-cron.php(191): do_action_ref_array('nfd_module_inst...', Array)
+#16 {main}
+  thrown in /home1/hnectpmy/public_html/wp-content/plugins/jetpack/jetpack_vendor/automattic/jetpack-connection/src/class-plugin.php on line 88
+[27-Dec-2024 18:53:58 UTC] Cron reschedule event error for hook: nfd_module_installer_plugin_install_cron, Error code: invalid_schedule, Error message: Event schedule does not exist., Data: {"schedule":"thirty_seconds","args":[],"interval":30}
