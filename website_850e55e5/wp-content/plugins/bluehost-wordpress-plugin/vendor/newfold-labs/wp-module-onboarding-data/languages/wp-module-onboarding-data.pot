@@ -7,25 +7,25 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-04-14T08:13:30+00:00\n"
+"POT-Creation-Date: 2025-02-17T16:50:49+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: wp-module-onboarding-data\n"
 
 #: includes/Brands.php:17
 msgid "your web host"
 msgstr ""
 
-#: includes/Options.php:122
-#: includes/Options.php:127
-#: includes/Options.php:132
-#: includes/Options.php:137
-#: includes/Options.php:142
-#: includes/Options.php:147
-#: includes/Options.php:152
-#: includes/Options.php:157
-#: includes/Options.php:162
-#: includes/Options.php:167
+#: includes/Options.php:124
+#: includes/Options.php:129
+#: includes/Options.php:134
+#: includes/Options.php:139
+#: includes/Options.php:144
+#: includes/Options.php:149
+#: includes/Options.php:154
+#: includes/Options.php:159
+#: includes/Options.php:164
+#: includes/Options.php:169
 msgid "Woocommerce Settings"
 msgstr ""
 
@@ -34,12 +34,12 @@ msgid "Home"
 msgstr ""
 
 #: includes/Patterns.php:20
-#: includes/Patterns.php:92
+#: includes/Patterns.php:93
 msgid "About"
 msgstr ""
 
 #: includes/Patterns.php:21
-#: includes/Patterns.php:101
+#: includes/Patterns.php:103
 msgid "Contact"
 msgstr ""
 
@@ -55,27 +55,27 @@ msgstr ""
 msgid "Careers"
 msgstr ""
 
-#: includes/Patterns.php:95
+#: includes/Patterns.php:96
 msgid "Explain your company values or the history behind your brand."
 msgstr ""
 
-#: includes/Patterns.php:103
+#: includes/Patterns.php:105
 msgid "Offer visitors a single page with a contact form, your street address and social media."
 msgstr ""
 
-#: includes/Patterns.php:108
+#: includes/Patterns.php:111
 msgid "Testimonials"
 msgstr ""
 
-#: includes/Patterns.php:111
+#: includes/Patterns.php:114
 msgid "Highlight your success with testimonials from your fans."
 msgstr ""
 
-#: includes/Patterns.php:117
+#: includes/Patterns.php:121
 msgid "Blog"
 msgstr ""
 
-#: includes/Patterns.php:119
+#: includes/Patterns.php:123
 msgid "A page for periodic news, announcements and ideas."
 msgstr ""
 
@@ -100,38 +100,46 @@ msgstr ""
 msgid "Error generating site meta: "
 msgstr ""
 
-#: includes/Services/SiteGenService.php:345
+#: includes/Services/SiteGenService.php:256
+msgid "Help us improve"
+msgstr ""
+
+#: includes/Services/SiteGenService.php:257
+msgid "How satisfied were you with the ease of creating your website?"
+msgstr ""
+
+#: includes/Services/SiteGenService.php:418
 msgid "Error generating homepages: "
 msgstr ""
 
-#: includes/Services/SiteGenService.php:373
+#: includes/Services/SiteGenService.php:446
 msgid "The homepage could not be found for regeneration."
 msgstr ""
 
-#: includes/Services/SiteGenService.php:405
-#: includes/Services/SiteGenService.php:410
+#: includes/Services/SiteGenService.php:478
+#: includes/Services/SiteGenService.php:483
 msgid " (Copy)"
 msgstr ""
 
-#: includes/Services/SiteGenService.php:443
+#: includes/Services/SiteGenService.php:516
 msgid "Error re-generating homepages: "
 msgstr ""
 
-#: includes/Services/SiteGenService.php:485
+#: includes/Services/SiteGenService.php:558
 msgid "Version "
 msgstr ""
 
-#: includes/Services/SiteGenService.php:510
-#: includes/Services/SiteGenService.php:597
-#: includes/Services/SiteGenService.php:650
+#: includes/Services/SiteGenService.php:583
+#: includes/Services/SiteGenService.php:670
+#: includes/Services/SiteGenService.php:723
 msgid "Prompt not found."
 msgstr ""
 
-#: includes/Services/SiteGenService.php:525
+#: includes/Services/SiteGenService.php:598
 msgid "Cannot retrieve color palatte"
 msgstr ""
 
-#: includes/Services/SiteGenService.php:613
+#: includes/Services/SiteGenService.php:686
 msgid "Cannot retrieve plugin recommendations."
 msgstr ""
 
@@ -356,46 +364,46 @@ msgstr ""
 msgid "Modern & approachable"
 msgstr ""
 
-#: includes/Themes/Fonts.php:37
+#: includes/Themes/Fonts.php:38
 msgid "Strong & sleek"
 msgstr ""
 
-#: includes/Themes/Fonts.php:53
+#: includes/Themes/Fonts.php:55
 msgid "Stately & elevated"
 msgstr ""
 
-#: includes/Themes/Fonts.php:69
+#: includes/Themes/Fonts.php:72
 msgid "Typewriter & crisp midcentury"
 msgstr ""
 
-#: includes/Themes/Fonts.php:85
+#: includes/Themes/Fonts.php:89
 msgid "Refined traditional newsletter"
 msgstr ""
 
-#: includes/Themes/Fonts.php:101
+#: includes/Themes/Fonts.php:106
 msgid "Bold stamp & slab"
 msgstr ""
 
-#: includes/Themes/Fonts.php:117
+#: includes/Themes/Fonts.php:123
 msgid "Fast & Simple"
 msgstr ""
 
-#: includes/Themes/Fonts.php:133
+#: includes/Themes/Fonts.php:140
 msgid "Timeless & Traditional"
 msgstr ""
 
-#: includes/Themes/Fonts.php:149
+#: includes/Themes/Fonts.php:157
 msgid "Sleek & Sophisticated"
 msgstr ""
 
-#: includes/Themes/Fonts.php:165
+#: includes/Themes/Fonts.php:174
 msgid "Clear & Crisp"
 msgstr ""
 
-#: includes/Themes/Fonts.php:181
+#: includes/Themes/Fonts.php:191
 msgid "Retro & Classy"
 msgstr ""
 
-#: includes/Themes/Fonts.php:197
+#: includes/Themes/Fonts.php:208
 msgid "Defined & Solid"
 msgstr ""

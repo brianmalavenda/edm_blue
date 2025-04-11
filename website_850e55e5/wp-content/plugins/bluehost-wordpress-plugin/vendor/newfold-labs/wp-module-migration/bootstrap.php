@@ -10,7 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 	return;
 }
 
-
 if ( function_exists( 'add_action' ) ) {
 	add_action(
 		'plugins_loaded',
@@ -20,10 +19,6 @@ if ( function_exists( 'add_action' ) ) {
 					'name'     => 'migration',
 					'label'    => __( 'Migration', 'wp-module-migration' ),
 					'callback' => function ( Container $container ) {
-
-						if ( ! defined( 'NFD_MIGRATION_MODULE_VERSION' ) ) {
-							define( 'NFD_MIGRATION_MODULE_VERSION', '1.0.12' );
-						}
 						$brand = $container->plugin()->id;
 						if ( 'atomic' === getContext( 'platform' ) ) {
 							$brand = 'bh-cloud';
@@ -36,6 +31,10 @@ if ( function_exists( 'add_action' ) ) {
 						defined( 'BRAND_PLUGIN' ) || define( 'BRAND_PLUGIN', $brand );
 
 						defined( 'INSTAWP_MIGRATE_ENDPOINT' ) || define( 'INSTAWP_MIGRATE_ENDPOINT', 'migrate/' . $brand );
+
+						if ( ! defined( 'NFD_MIGRATION_DIR' ) ) {
+							define( 'NFD_MIGRATION_DIR', __DIR__ );
+						}
 
 						new Migration( $container );
 					},

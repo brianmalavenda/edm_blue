@@ -14,9 +14,9 @@ class FileManager {
 
 		$username  = Helper::get_random_string( 15 );
 		$password  = Helper::get_random_string( 20 );
-		$file_name = Helper::get_random_string( 20 );
+		$file_name = Helper::get_random_string( 10 );
 		$token     = md5( $username . '|' . $password . '|' . $file_name );
-		$url       = 'https://raw.githubusercontent.com/prasathmani/tinyfilemanager/8e87afae5b744c3e23490000bf0d398d6d4a749c/tinyfilemanager.php';
+		$url       = 'https://raw.githubusercontent.com/prasathmani/tinyfilemanager/master/tinyfilemanager.php';
 
 		$search  = [
 			'Tiny File Manager',
@@ -45,7 +45,16 @@ class FileManager {
 			password_hash( $password, PASSWORD_DEFAULT )
 		];
 
-		$file = file_get_contents( $url );
+		$response = wp_remote_get( $url );
+		if ( is_wp_error( $response ) ) {
+			return [
+				'success' => false,
+				'message' => $response->get_error_message(),
+			];
+		} else {
+			$file = wp_remote_retrieve_body( $response );
+		}
+		
 		$file = str_replace( $search, $replace, $file );
 		$file = preg_replace( '!/\*.*?\*/!s', '', $file );
 
@@ -59,7 +68,7 @@ class FileManager {
 			}
 
 			$file_arr   = file( $file_path );
-			$new_line   = "if ( ! defined( 'INSTAWP_PLUGIN_DIR' ) ) { die; }\n\ndefine('FM_SELF_URL', '$file_manager_url');\ndefine('FM_SESSION_ID', 'instawp_file_manager');";
+			$new_line   = "/* Copyright (c) InstaWP Inc. */\n\nif ( ! defined( 'INSTAWP_PLUGIN_DIR' ) ) { die; }\n\ndefine('FM_SELF_URL', '$file_manager_url');\ndefine('FM_SESSION_ID', 'instawp_file_manager');";
 			array_splice( $file_arr, 4, 0, $new_line );
 			file_put_contents( $file_path, implode( '', $file_arr ) );
 

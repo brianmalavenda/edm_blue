@@ -105,13 +105,29 @@ class EntitlementsApi {
 	 */
 	public function get_items() {
 
+		// TODO: update response to be available without connection and return solutions categories and premium
 		// If there is no Hiive connection, bail.
 		if ( ! HiiveConnection::is_connected() ) {
-			// if ( defined( 'WP_DEBUG' ) && true === WP_DEBUG ) {
-			// 	// for debugging - use a local json file rather than hiive entitlement endpoint response
-			// 	return new WP_REST_Response( json_decode( file_get_contents( NFD_SOLUTIONS_DIR . '/tests/cypress/fixtures/entitlements.json' ) ), 218 );
-			// }
-			return new WP_REST_Response( array( 'message' => 'Not allowed to load entitlements from server.' ), 403 );
+			$allowed_solutions = array( 'commerce', 'service', 'creator', 'none' );
+			if ( defined( 'WP_DEBUG' ) && true === WP_DEBUG && 'local' === wp_get_environment_type() && in_array( $_GET['solution'], $allowed_solutions ) ) {
+				$fixture = NFD_SOLUTIONS_DIR . '/tests/cypress/fixtures/' . $_GET['solution'] . '.json';
+				if ( is_readable( $fixture ) ) {
+					// Use a json fixture rather than hiive entitlement endpoint response - for local dev and cypress tests
+					return new WP_REST_Response( json_decode( file_get_contents( $fixture ) ), 218 );
+				}
+			}
+			// If no connection, give an empty response.
+			return new WP_REST_Response(
+				array(
+					'message'      => 'Not allowed to load entitlements from server.',
+					'solution'     => null,
+					'categories'   => array(),
+					'solutions'    => array(),
+					'entitlements' => array(),
+					'premium'      => array(),
+				),
+				200
+			);
 		}
 
 		$entitlements = get_transient( self::TRANSIENT );

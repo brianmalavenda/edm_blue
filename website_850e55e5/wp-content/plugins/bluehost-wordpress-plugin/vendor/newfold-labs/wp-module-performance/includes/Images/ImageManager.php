@@ -37,21 +37,20 @@ class ImageManager {
 	 * @param Container $container Dependency injection container.
 	 */
 	private function initialize_services( Container $container ) {
-		$this->maybe_initialize_upload_listener();
+		$this->initialize_upload_listener();
 		$this->maybe_initialize_lazy_loader();
 		$this->maybe_initialize_bulk_optimizer();
 		$this->maybe_initialize_rest_api();
 		$this->maybe_initialize_marker();
 		$this->maybe_initialize_image_rewrite_handler( $container );
+		$this->maybe_initialize_image_limit_banner( $container );
 	}
 
 	/**
 	 * Initializes the ImageUploadListener if auto-optimization is enabled.
 	 */
-	private function maybe_initialize_upload_listener() {
-		if ( ImageSettings::is_optimization_enabled() && ImageSettings::is_auto_optimization_enabled() ) {
-			new ImageUploadListener( ImageSettings::is_auto_delete_enabled() );
-		}
+	private function initialize_upload_listener() {
+		new ImageUploadListener( ImageSettings::is_auto_delete_enabled() );
 	}
 
 	/**
@@ -100,6 +99,17 @@ class ImageManager {
 		&& $container->has( 'isApache' )
 		&& $container->get( 'isApache' ) ) {
 			new ImageRewriteHandler();
+		}
+	}
+
+	/**
+	 * Conditionally initializes the Image Limit Banner in the WordPress admin area.
+	 *
+	 * @param Container $container Dependency injection container.
+	 */
+	private function maybe_initialize_image_limit_banner( $container ) {
+		if ( ImageSettings::is_optimization_enabled() && Permissions::is_authorized_admin() ) {
+			new ImageLimitBanner( $container );
 		}
 	}
 }

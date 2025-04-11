@@ -4,9 +4,9 @@ namespace InstaWP\Connect\Helpers;
 
 class Curl {
 
-	public static function do_curl( $endpoint, $body = array(), $headers = array(), $is_post = true, $api_version = 'v2', $api_key = '' ) {
+    public static function do_curl( $endpoint, $body = array(), $headers = array(), $method = 'POST', $api_version = 'v2', $api_key = '', $api_domain = '' ) {
+        $api_url = ! empty( $api_domain ) ? $api_domain : Helper::get_api_domain();
 
-		$api_url = Helper::get_api_domain();
 		if ( empty( $api_url ) ) {
 			return array(
 				'success' => false,
@@ -25,24 +25,27 @@ class Curl {
 			);
 		}
 
-		$api_url = $api_url . '/api/' . $api_version . '/' . $endpoint;
+        if ( $api_version !== null ) {
+		    $api_url = $api_url . '/api/' . $api_version . '/' . $endpoint;
+        } else {
+            $api_url = $api_url . '/api/' . $endpoint;
+        }
+
 		$headers = wp_parse_args( $headers, array(
 			'Authorization' => 'Bearer ' . $api_key,
 			'Accept'        => 'application/json',
 			'Content-Type'  => 'application/json',
-			'Referer'       => site_url(),
+			'Referer'       => Helper::wp_site_url(),
 		) );
 
-		if ( $is_post === 'patch' ) {
-			$api_method = 'PATCH';
-		} elseif ( $is_post === 'put' ) {
-			$api_method = 'PUT';
+		if ( is_bool( $method ) ) {
+			$method = $method ? 'POST' : 'GET';
 		} else {
-			$api_method = $is_post ? 'POST' : 'GET';
+			$method = strtoupper( $method );
 		}
 
 		$args = array(
-			'method'          => $api_method,
+			'method'          => $method,
 			'headers'         => $headers,
 			'timeout'         => 60,
 			'redirection'     => 10,
@@ -55,14 +58,14 @@ class Curl {
 		);
 
 		if ( ! empty( $body ) ) {
-			$args['body'] = wp_json_encode( $body );
+			$args['body'] = is_array( $body ) ? wp_json_encode( $body ) : $body;
 		}
 
 		$response = wp_remote_request( $api_url, $args );
 
 		if ( defined( 'INSTAWP_DEBUG_LOG' ) && INSTAWP_DEBUG_LOG ) {
 			error_log( 'API URL - ' . $api_url );
-			error_log( 'API ARGS - ' . wp_json_encode( $body ) );
+			error_log( 'API ARGS - ' . is_array( $body ) ? wp_json_encode( $body ) : $body );
 			error_log( 'API HEADERS - ' . wp_json_encode( $headers ) );
 			error_log( 'API Response - ' . wp_json_encode( $response ) );
 		}

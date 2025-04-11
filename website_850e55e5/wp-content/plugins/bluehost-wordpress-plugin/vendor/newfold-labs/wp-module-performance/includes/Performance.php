@@ -3,32 +3,22 @@
 namespace NewfoldLabs\WP\Module\Performance;
 
 use NewfoldLabs\WP\ModuleLoader\Container;
-use NewfoldLabs\WP\Module\Performance\Permissions;
 use NewfoldLabs\WP\Module\Installer\Services\PluginInstaller;
+use NewfoldLabs\WP\Module\Performance\Permissions;
 use NewfoldLabs\WP\Module\Performance\Images\ImageManager;
 use NewfoldLabs\WP\Module\Performance\RestApi\RestApi;
-
-use Automattic\Jetpack\Current_Plan;
 use NewfoldLabs\WP\Module\Performance\Data\Constants;
+use NewfoldLabs\WP\Module\Performance\HealthChecks;
+use NewfoldLabs\WP\Module\Performance\Services\I18nService;
+use NewfoldLabs\WP\Module\Performance\LinkPrefetch\LinkPrefetch;
+use NewfoldLabs\WP\Module\Performance\JetpackBoost\JetpackBoost;
+
+use function NewfoldLabs\WP\Module\Performance\is_settings_page;
 
 /**
- * Performance Class
+ * Main class for the performance module.
  */
 class Performance {
-
-	/**
-	 * The option name where the cache level is stored.
-	 *
-	 * @var string
-	 */
-	const OPTION_CACHE_LEVEL = 'newfold_cache_level';
-
-	/**
-	 * The option name where the "Skip WordPress 404 Handling for Static Files" option is stored.
-	 *
-	 * @var string
-	 */
-	const OPTION_SKIP_404 = 'newfold_skip_404_handling';
 
 	/**
 	 * URL parameter used to purge the entire cache.
@@ -75,25 +65,34 @@ class Performance {
 
 		$cacheManager = new CacheManager( $container );
 		$cachePurger  = new CachePurgingService( $cacheManager->getInstances() );
+		new PerformanceWPCLI();
 		new Constants( $container );
 		new ImageManager( $container );
+		new HealthChecks( $container );
+
+		new LinkPrefetch( $container );
+		new CacheExclusion( $container );
+
+		new JetpackBoost( $container );
 
 		add_action( 'admin_bar_menu', array( $this, 'adminBarMenu' ), 100 );
 		add_action( 'admin_menu', array( $this, 'add_sub_menu_page' ) );
-
-		new LinkPrefetch( $container );
+		add_filter( 'nfd_plugin_subnav', array( $this, 'add_nfd_subnav' ) );
 
 		$container->set( 'cachePurger', $cachePurger );
 
 		$container->set( 'hasMustUsePlugin', file_exists( WPMU_PLUGIN_DIR . '/endurance-page-cache.php' ) );
 
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-
 		if ( Permissions::is_authorized_admin() || Permissions::rest_is_authorized_admin() ) {
 			new RestAPI();
 		}
 
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );
+
 		add_filter( 'newfold-runtime', array( $this, 'add_to_runtime' ), 100 );
+
+		! defined( 'NFD_PERFORMANCE_PLUGIN_LANGUAGES_DIR' ) && define( 'NFD_PERFORMANCE_PLUGIN_LANGUAGES_DIR', dirname( $container->plugin()->file ) . '/vendor/newfold-labs/wp-module-performance/languages' );
+		new I18nService( $container );
 	}
 
 	/**
@@ -103,7 +102,20 @@ class Performance {
 	 */
 	public function configureContainer( Container $container ) {
 
-		global $is_apache;
+		$is_apache = false;
+
+		// Ensure $is_apache is properly set, with a fallback for WP-CLI environment
+		if ( NFD_WPCLI::is_executing_wp_cli() ) {
+			// Attempt to detect Apache based on the SERVER_SOFTWARE header
+			$is_apache = isset( $_SERVER['SERVER_SOFTWARE'] ) && stripos( $_SERVER['SERVER_SOFTWARE'], 'apache' ) !== false;
+
+			// Check for the existence of an .htaccess file (commonly used in Apache environments)
+			if ( ! $is_apache && file_exists( ABSPATH . '.htaccess' ) ) {
+				$is_apache = true;
+			}
+		} else {
+			global $is_apache;
+		}
 
 		$container->set( 'isApache', $is_apache );
 
@@ -121,9 +133,10 @@ class Performance {
 	 * Add hooks.
 	 */
 	public function hooks() {
+
 		add_action( 'admin_init', array( $this, 'remove_epc_settings' ), 99 );
 
-		new OptionListener( self::OPTION_CACHE_LEVEL, array( $this, 'onCacheLevelChange' ) );
+		new OptionListener( CacheManager::OPTION_CACHE_LEVEL, array( $this, 'onCacheLevelChange' ) );
 
 		/**
 		 * On CLI requests, mod_rewrite is unavailable, so it fails to update
@@ -227,7 +240,7 @@ class Performance {
 		$responseHeaderManager = $this->container->get( 'responseHeaderManager' );
 		$responseHeaderManager->addHeader( 'X-Newfold-Cache-Level', absint( $cacheLevel ) );
 
-		// Remove the old option from EPC, if it exists
+		// Remove the old option from EPC, if it exists.
 		if ( $this->container->get( 'hasMustUsePlugin' ) && absint( get_option( 'endurance_cache_level', 0 ) ) ) {
 			update_option( 'endurance_cache_level', 0 );
 			delete_option( 'endurance_cache_level' );
@@ -237,7 +250,7 @@ class Performance {
 	/**
 	 * Add options to the WordPress admin bar.
 	 *
-	 * @param \WP_Admin_Bar $wp_admin_bar the admin bar
+	 * @param \WP_Admin_Bar $wp_admin_bar the admin bar.
 	 */
 	public function adminBarMenu( \WP_Admin_Bar $wp_admin_bar ) {
 
@@ -250,50 +263,52 @@ class Performance {
 			$wp_admin_bar->add_node(
 				array(
 					'id'    => 'nfd_purge_menu',
-					'title' => __( 'Caching', 'newfold-module-performance' ),
+					'title' => __( 'Caching', 'wp-module-performance' ),
 				)
 			);
 
-			$wp_admin_bar->add_node(
-				array(
-					'id'     => 'nfd_purge_menu-purge_all',
-					'title'  => __( 'Purge All', 'newfold-module-performance' ),
-					'parent' => 'nfd_purge_menu',
-					'href'   => add_query_arg( array( self::PURGE_ALL => true ) ),
-				)
-			);
-
-			if ( ! is_admin() ) {
+			$cache_level = CacheManager::get_cache_level();
+			if ( $cache_level > 0 ) {
 				$wp_admin_bar->add_node(
 					array(
-						'id'     => 'nfd_purge_menu-purge_single',
-						'title'  => __( 'Purge This Page', 'newfold-module-performance' ),
+						'id'     => 'nfd_purge_menu-purge_all',
+						'title'  => __( 'Purge All', 'wp-module-performance' ),
 						'parent' => 'nfd_purge_menu',
-						'href'   => add_query_arg( array( self::PURGE_URL => true ) ),
+						'href'   => add_query_arg( array( self::PURGE_ALL => true ) ),
 					)
 				);
+
+				if ( ! is_admin() ) {
+					$wp_admin_bar->add_node(
+						array(
+							'id'     => 'nfd_purge_menu-purge_single',
+							'title'  => __( 'Purge This Page', 'wp-module-performance' ),
+							'parent' => 'nfd_purge_menu',
+							'href'   => add_query_arg( array( self::PURGE_URL => true ) ),
+						)
+					);
+				}
 			}
 
 			$brand = $this->container->get( 'plugin' )['id'];
 			$wp_admin_bar->add_node(
 				array(
 					'id'     => 'nfd_purge_menu-cache_settings',
-					'title'  => __( 'Cache Settings', 'newfold-module-performance' ),
+					'title'  => __( 'Cache Settings', 'wp-module-performance' ),
 					'parent' => 'nfd_purge_menu',
 					'href'   => admin_url( "admin.php?page=$brand#/performance" ),
 				)
 			);
 		}
 	}
-
 	/**
 	 * Add performance menu in WP/Settings
 	 */
 	public function add_sub_menu_page() {
 		$brand = $this->container->get( 'plugin' )['id'];
 		add_management_page(
-			__( 'Performance', 'newfold-performance-module' ),
-			__( 'Performance', 'newfold-performance-module' ),
+			__( 'Performance', 'wp-module-performance' ),
+			__( 'Performance', 'wp-module-performance' ),
 			'manage_options',
 			admin_url( "admin.php?page=$brand#/performance" ),
 			null,
@@ -301,16 +316,36 @@ class Performance {
 		);
 	}
 
-		/*
-	 * Enqueue scripts and styles in admin
+	/**
+	 * Add to the Newfold subnav.
+	 *
+	 * @param array $subnav The nav array.
+	 * @return array The filtered nav array
 	 */
-	public function enqueue_scripts() {
-		$plugin_url = $this->container->plugin()->url . get_styles_path();
-		wp_register_style( 'wp-module-performance-styles', $plugin_url, array(), $this->container->plugin()->version );
-		wp_enqueue_style( 'wp-module-performance-styles' );
+	public function add_nfd_subnav( $subnav ) {
+		$brand = $this->container->get( 'plugin' )['id'];
+		$performance = array(
+			'route'    => $brand . '#/performance',
+			'title'    => __( 'Performance', 'wp-module-performance' ),
+			'priority' => 30,
+		);
+		array_push( $subnav, $performance );
+		return $subnav;
 	}
 
-	/*
+	/**
+	 * Enqueue styles and styles in admin
+	 */
+	public function enqueue_styles() {
+		$brand = $this->container->plugin()->brand;
+		if ( is_settings_page( $brand ) ) {
+			$plugin_url = $this->container->plugin()->url . get_styles_path();
+			wp_register_style( 'wp-module-performance-styles', $plugin_url, array(), $this->container->plugin()->version );
+			wp_enqueue_style( 'wp-module-performance-styles' );
+		}
+	}
+
+	/**
 	 * Add to Newfold SDK runtime.
 	 *
 	 * @param array $sdk SDK data.
@@ -318,38 +353,9 @@ class Performance {
 	 */
 	public function add_to_runtime( $sdk ) {
 		$values = array(
-			'jetpack_boost_is_active'           => defined( 'JETPACK_BOOST_VERSION' ),
-			'jetpack_boost_premium_is_active'   => $this->isJetPackBoostActive(),
-			'jetpack_boost_critical_css'        => get_option( 'jetpack_boost_status_critical-css' ),
-			'jetpack_boost_blocking_js'         => get_option( 'jetpack_boost_status_render-blocking-js' ),
-			'jetpack_boost_minify_js'           => get_option( 'jetpack_boost_status_minify-js', array() ),
-			'jetpack_boost_minify_js_excludes'  => implode( ',', get_option( 'jetpack_boost_ds_minify_js_excludes', array( 'jquery', 'jquery-core', 'underscore', 'backbone' ) ) ),
-			'jetpack_boost_minify_css'          => get_option( 'jetpack_boost_status_minify-css', array() ),
-			'jetpack_boost_minify_css_excludes' => implode( ',', get_option( 'jetpack_boost_ds_minify_css_excludes', array( 'admin-bar', 'dashicons', 'elementor-app' ) ) ),
-			'install_token'                     => PluginInstaller::rest_get_plugin_install_hash(),
+			'skip404' => getSkip404Option(),
 		);
 
 		return array_merge( $sdk, array( 'performance' => $values ) );
-	}
-
-
-	/**
-	 * Check if Jetpack Boost premium is active.
-	 *
-	 * @return boolean
-	 */
-	public function isJetPackBoostActive() {
-		$exists = false;
-		if ( class_exists( 'Automattic\Jetpack\Current_Plan' ) ) {
-			$products = Current_Plan::get_products();
-			foreach ( $products as $product ) {
-				if ( isset( $product['product_slug'] ) && strpos( $product['product_slug'], 'jetpack-boost' ) !== false ) {
-					$exists = true;
-					break;
-				}
-			}
-		}
-
-		return $exists;
 	}
 }

@@ -37,6 +37,7 @@ return array(
     '438e814f7ad74cb167165cdd71008bd1' => $vendorDir . '/newfold-labs/wp-module-ecommerce/bootstrap.php',
     '5ee5219d3466408f211336f2833c67d0' => $vendorDir . '/newfold-labs/wp-module-global-ctb/bootstrap.php',
     'd8e2dabad073907eb802416a5505e159' => $vendorDir . '/newfold-labs/wp-module-help-center/bootstrap.php',
+    '0014b088a435f98352ef0c9f258218a8' => $vendorDir . '/newfold-labs/wp-module-hosting/bootstrap.php',
     '7c5dbbc48ace6d036fb7435638b4473b' => $vendorDir . '/newfold-labs/wp-module-marketplace/bootstrap.php',
     '26840a0cd4e9420cf8b4732c7ad196b5' => $vendorDir . '/newfold-labs/wp-module-notifications/bootstrap.php',
     '7428ba02ca10bbb00ca25d8b12288235' => $vendorDir . '/newfold-labs/wp-module-onboarding/bootstrap.php',

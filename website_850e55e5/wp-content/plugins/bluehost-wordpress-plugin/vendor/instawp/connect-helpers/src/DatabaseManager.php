@@ -12,7 +12,7 @@ class DatabaseManager {
     public function get() {
 		$this->clean();
 
-		$file_name = Helper::get_random_string( 20 );
+		$file_name = Helper::get_random_string( 10 );
 		$token     = md5( $file_name );
 		$url       = 'https://github.com/adminerevo/adminerevo/releases/download/v4.8.4/adminer-4.8.4.php';
 
@@ -29,7 +29,16 @@ class DatabaseManager {
 			'instawp_sid',
 		];
 
-		$file = file_get_contents( $url );
+		$response = wp_remote_get( $url );
+		if ( is_wp_error( $response ) ) {
+			return [
+				'success' => false,
+				'message' => $response->get_error_message(),
+			];
+		} else {
+			$file = wp_remote_retrieve_body( $response );
+		}
+
 		$file = preg_replace( $search, $replace, $file );
 
 		$file_path            = self::get_file_path( $file_name );
@@ -42,7 +51,7 @@ class DatabaseManager {
 			}
 
 			$file_arr   = file( $file_path );
-			$new_line   = "if ( ! defined( 'INSTAWP_PLUGIN_DIR' ) ) { die; }\n";
+			$new_line   = "/* Copyright (c) InstaWP Inc. */\n\nif ( ! defined( 'INSTAWP_PLUGIN_DIR' ) ) { die; }\n";
 			array_splice( $file_arr, 1, 0, $new_line );
 			file_put_contents( $file_path, implode( '', $file_arr ) );
 

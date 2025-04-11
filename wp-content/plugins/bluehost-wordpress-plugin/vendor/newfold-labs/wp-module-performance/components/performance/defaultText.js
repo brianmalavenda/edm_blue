@@ -12,7 +12,7 @@ const defaultText = {
 		'wp-module-performance'
 	),
 	cacheLevel1Description: __(
-		'Cache static assets like images and the appearance of your site for 1 hour. ',
+		'Cache static assets like images and the appearance of your site for 1 hour.',
 		'wp-module-performance'
 	),
 	cacheLevel1Label: __( 'Assets Only', 'wp-module-performance' ),
@@ -25,7 +25,7 @@ const defaultText = {
 		'wp-module-performance'
 	),
 	cacheLevel2Description: __(
-		'Cache static assets for 24 hours and web pages for 2 hours. ',
+		'Cache static assets for 24 hours and web pages for 2 hours.',
 		'wp-module-performance'
 	),
 	cacheLevel2Label: __( 'Assets & Web Pages', 'wp-module-performance' ),
@@ -38,7 +38,7 @@ const defaultText = {
 		'wp-module-performance'
 	),
 	cacheLevel3Description: __(
-		'Cache static assets for 1 week and web pages for 8 hours. ',
+		'Cache static assets for 1 week and web pages for 8 hours.',
 		'wp-module-performance'
 	),
 	cacheLevel3Label: __(
@@ -66,7 +66,25 @@ const defaultText = {
 	),
 	clearCacheNoticeTitle: __( 'Cache cleared', 'wp-module-performance' ),
 	clearCacheTitle: __( 'Clear Cache', 'wp-module-performance' ),
-
+	cacheExclusionTitle: __( 'Exclude from cache', 'wp-module-performance' ),
+	cacheExclusionDescription: __(
+		'This setting controls what pages pass a “no-cache” header so that page caching and browser caching is not used.',
+		'wp-module-performance'
+	),
+	cacheExclusionSaved: __( 'Cache Exclusion saved', 'wp-module-performance' ),
+	cacheExclusionSaveButton: __( 'Save', 'wp-module-performance' ),
+	// Skip 404
+	skip404Title: __( 'Skip 404', 'wp-module-performance' ),
+	skip404Description: __(
+		'When enabled, static resources like images and fonts will use a default server 404 page and not WordPress 404 pages. Pages and posts will continue using WordPress for 404 pages. This can considerably speed up your website if a static resource like an image or font is missing.',
+		'wp-module-performance'
+	),
+	skip404OptionLabel: __(
+		'Enable Skip 404 Handling For Static Files',
+		'wp-module-performance'
+	),
+	skip404NoticeTitle: __( 'Skip 404 saved', 'wp-module-performance' ),
+	skip404Notice: __( 'Skip 404 saved', 'wp-module-performance' ),
 	// Image Optimization
 	imageOptimizationSettingsTitle: __(
 		'Image Optimization',
@@ -164,8 +182,18 @@ const defaultText = {
 		'Something went wrong while updating the settings. Please try again.',
 		'wp-module-performance'
 	),
+	imageOptimizationBannedMessage: __(
+		'This site no longer qualifies for image optimization as it has reached its usage limits.',
+		'wp-module-performance'
+	),
+	imageOptimizationUsage: __( 'Usage:', 'wp-module-performance' ),
+	imageOptimizationProcessed: __(
+		'images processed of',
+		'wp-module-performance'
+	),
+	imageOptimizationPerMonth: __( '/month', 'wp-module-performance' ),
 	linkPrefetchDescription: __(
-		'Asks the browser to download and cache links on the page ahead of them being clicked on, so that when they are clicked they load almost instantly. ',
+		'Asks the browser to download and cache links on the page ahead of them being clicked on, so that when they are clicked they load almost instantly.',
 		'wp-module-performance'
 	),
 	linkPrefetchNoticeTitle: __(
@@ -187,7 +215,7 @@ const defaultText = {
 	),
 	linkPrefetchBehaviorLabel: __( 'Behavior', 'wp-module-performance' ),
 	linkPrefetchBehaviorMouseDownLabel: __(
-		'Prefetch on Mouse down',
+		'Prefetch on Mouse Down',
 		'wp-module-performance'
 	),
 	linkPrefetchBehaviorMouseDownDescription: __(
@@ -203,7 +231,7 @@ const defaultText = {
 		'wp-module-performance'
 	),
 	linkPrefetchActivateOnMobileDescription: __(
-		'Enable link prefetching on Mobile',
+		'Enable link prefetching on mobile',
 		'wp-module-performance'
 	),
 	linkPrefetchActivateOnMobileLabel: __(
@@ -215,7 +243,7 @@ const defaultText = {
 		'wp-module-performance'
 	),
 	linkPrefetchBehaviorMobileTouchstartDescription: __(
-		'Prefetch on Touch Start: Instantly starts loading the page as soon as you tap the screen, ensuring a quicker response when you lift your finger.',
+		'Prefetch on Touchstart: Instantly starts loading the page as soon as you tap the screen, ensuring a quicker response when you lift your finger.',
 		'wp-module-performance'
 	),
 	linkPrefetchBehaviorMobileViewportLabel: __(
@@ -246,12 +274,32 @@ const defaultText = {
 		'Optimize Critical CSS Loading (manual)',
 		'wp-module-performance'
 	),
-	jetpackBoostCriticalCssDescription: __(
-		'Move important styling information to the start of the page, which helps pages display your content sooner, so your users don’t have to wait for the entire page to load.',
-		'wp-module-performance'
+	jetpackBoostCriticalCssDescription: sprintf(
+		// translators: %1$s is a line break (<br>) tag.
+		__(
+			'Move important styling information to the start of the page, which helps pages display your content sooner, so your users don’t have to wait for the entire page to load.%1$s You should regenerate your Critical CSS whenever you make changes to the HTML or CSS structure of your site.',
+			'wp-module-performance'
+		),
+		'<br><br>',
 	),
 	jetpackBoostCriticalCssPremiumTitle: __(
 		'Optimize Critical CSS Loading (UPGRADED)',
+		'wp-module-performance'
+	),
+	jetpackBoostCriticalCssButton: __(
+		'Generate CSS',
+		'wp-module-performance'
+	),
+	jetpackBoostCriticalCssGenerattionSuccess: __(
+		'Critical CSS generated successfully.',
+		'wp-module-performance'
+	),
+	jetpackBoostCriticalCssGenerationText: __(
+		"Keep this page opened until the process finish",
+		'wp-module-performance'
+	),
+	jetpackBoostCriticalCssGenerationIssue: __(
+		"Error generating Critical CSS, try again",
 		'wp-module-performance'
 	),
 	jetpackBoostCriticalCssUpgradeTitle: __(
@@ -264,9 +312,18 @@ const defaultText = {
 			'Move important styling information to the start of the page, which helps pages display your content sooner, so your users don’t have to wait for the entire page to load.%1$s %2$sBoost will automatically generate your Critical CSS%3$s whenever you make changes to the HTML or CSS structure of your site.',
 			'wp-module-performance'
 		),
-		'<br>',
+		'<br><br>',
 		'<strong>',
 		'</strong>'
+	),
+	jetpackBoostCriticalCssModalDescription: sprintf(
+		// translators: %1$s is a line break (<p>), %2$s is the opening </p> tag.
+		__(
+			"%1$sThe manual generation of your Critical CSS will be launched now and you'll be redirected to Jetpack Boost page to track the progress.%2$s%1$sDo you want proceed?%2$s",
+			'wp-module-performance'
+		),
+		'<p>',
+		'</p>',
 	),
 	jetpackBoostRenderBlockingTitle: __(
 		'Defer Non-Essential JavaScript',
@@ -321,8 +378,10 @@ const defaultText = {
 		'Discover more %1$shere%2$s',
 		'wp-module-performance'
 	),
+	lockedBadgeText : __( 'Locked', 'wp-module-performance' ),
 	optionSet: __( 'Option saved correctly', 'wp-module-performance' ),
 	optionNotSet: __( 'Error saving option', 'wp-module-performance' ),
+	upgradeModule: __( 'Upgrade to unlock', 'wp-module-performance' ),
 };
 
 export default defaultText;

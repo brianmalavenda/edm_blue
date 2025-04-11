@@ -65,6 +65,43 @@ class SiteGen {
 	}
 
 	/**
+	 * Function to refine the site description, i.e. translate and summarize when required
+	 *
+	 * @param string $site_description The site description
+	 */
+	private static function get_refined_site_description( $site_description ) {
+		$refined_description = self::get_sitegen_from_cache( 'refinedSiteDescription' );
+		if ( $refined_description ) {
+			return $refined_description;
+		}
+
+		$response = wp_remote_post(
+			NFD_AI_BASE . 'refineSiteDescription',
+			array(
+				'headers' => array(
+					'Content-Type' => 'application/json',
+				),
+				'timeout' => 60,
+				'body'    => wp_json_encode(
+					array(
+						'hiivetoken' => HiiveConnection::get_auth_token(),
+						'prompt'     => $site_description,
+					)
+				),
+			)
+		);
+
+		$response_code = wp_remote_retrieve_response_code( $response );
+		if ( 200 !== $response_code ) {
+			return $site_description;
+		}
+
+		$refined_description = json_decode( wp_remote_retrieve_body( $response ), true );
+		self::cache_sitegen_response( 'refinedSiteDescription', $refined_description );
+		return $refined_description;
+	}
+
+	/**
 	 * Function to validate site info
 	 *
 	 * @param array  $site_info  The main input for forming the prompt
@@ -106,12 +143,12 @@ class SiteGen {
 	 *
 	 * @param array $site_info The JSON input for the sitegen call.
 	 */
-	private static function get_prompt_from_info( $site_info ) {
-		$prompt = '';
+	private static function get_prompt_from_info( array $site_info ) {
+		$details = array();
 		foreach ( $site_info as $key => $value ) {
-			$prompt = $prompt . $key . ': ' . $value . ', ';
+			$details[] = $key . ': ' . $value;
 		}
-		return $prompt;
+		return implode( ', ', $details );
 	}
 
 	/**
@@ -384,13 +421,13 @@ class SiteGen {
 	public static function generate_site_meta( $site_info, $identifier, $skip_cache = false ) {
 		if ( ! self::check_capabilities() ) {
 			return array(
-				'error' => __( 'You do not have the permissions to perform this action' ),
+				'error' => __( 'You do not have the permissions to perform this action', 'wp-module-ai' ),
 			);
 		}
 
 		if ( ! self::validate_site_info( $site_info, $identifier ) ) {
 			return array(
-				'error' => __( 'Required values not provided' ),
+				'error' => __( 'Required values not provided', 'wp-module-ai' ),
 			);
 		}
 
@@ -400,6 +437,8 @@ class SiteGen {
 				return $site_gen_cached;
 			}
 		}
+
+		$refined_description = self::get_refined_site_description( $site_info['site_description'] );
 
 		$response = wp_remote_post(
 			NFD_AI_BASE . 'generateSiteMeta',
@@ -411,7 +450,7 @@ class SiteGen {
 				'body'    => wp_json_encode(
 					array(
 						'hiivetoken' => HiiveConnection::get_auth_token(),
-						'prompt'     => self::get_prompt_from_info( $site_info ),
+						'prompt'     => $refined_description,
 						'identifier' => $identifier,
 					)
 				),
@@ -434,12 +473,12 @@ class SiteGen {
 					);
 				} else {
 					return array(
-						'error' => __( 'We are unable to process the request at this moment' ),
+						'error' => __( 'We are unable to process the request at this moment', 'wp-module-ai' ),
 					);
 				}
 			} catch ( \Exception $exception ) {
 				return array(
-					'error' => __( 'We are unable to process the request at this moment' ),
+					'error' => __( 'We are unable to process the request at this moment', 'wp-module-ai' ),
 				);
 			}
 		}
@@ -454,7 +493,7 @@ class SiteGen {
 			if ( ! $site_classification_mapping ) {
 				$site_classification_mapping = self::generate_site_meta(
 					array(
-						'site_description' => $site_info,
+						'site_description' => $site_info['site_description'],
 					),
 					'siteclassificationmapping'
 				);
@@ -472,7 +511,7 @@ class SiteGen {
 			return $parsed_response;
 		} catch ( \Exception $exception ) {
 			return array(
-				'error' => __( 'We are unable to process the request at this moment' ),
+				'error' => __( 'We are unable to process the request at this moment', 'wp-module-ai' ),
 			);
 		}
 	}
@@ -489,7 +528,7 @@ class SiteGen {
 	public static function get_home_pages( $site_description, $content_style, $target_audience, $regenerate = false ) {
 		if ( ! self::check_capabilities() ) {
 			return array(
-				'error' => __( 'You do not have the permissions to perform this action' ),
+				'error' => __( 'You do not have the permissions to perform this action', 'wp-module-ai' ),
 			);
 		}
 
@@ -501,6 +540,8 @@ class SiteGen {
 			}
 		}
 
+		$site_description = self::get_refined_site_description( $site_description );
+
 		$generated_content_structures = self::get_sitegen_from_cache(
 			'contentStructures'
 		);
@@ -511,24 +552,36 @@ class SiteGen {
 			),
 			'keywords'
 		);
+
+		// Site classification: primary and secondary types
+		$site_classification = self::get_sitegen_from_cache( 'siteclassification' );
+		$primary_type        = 'other';
+		$secondary_type      = 'other';
+		if ( is_array( $site_classification ) ) {
+			$primary_type   = $site_classification['primaryType'] ?? 'other';
+			$secondary_type = $site_classification['slug'] ?? 'other';
+		}
+
 		if ( ! $generated_content_structures ) {
 			$response      = wp_remote_post(
-				NFD_AI_BASE . 'generatePageContent',
+				NFD_CONTENT_GENERATION_BASE . 'page',
 				array(
 					'headers' => array(
-						'Content-Type' => 'application/json',
+						'Content-Type'  => 'application/json',
+						'Authorization' => 'Bearer ' . HiiveConnection::get_auth_token(),
 					),
 					'timeout' => 60,
 					'body'    => wp_json_encode(
 						array(
-							'hiivetoken' => HiiveConnection::get_auth_token(),
-							'prompt'     => array(
+							'prompt'        => array(
 								'site_description' => $site_description,
 								'keywords'         => wp_json_encode( $keywords ),
 								'content_style'    => wp_json_encode( $content_style ),
 								'target_audience'  => wp_json_encode( $target_audience ),
 							),
-							'page'       => 'home',
+							'page'          => 'home',
+							'primaryType'   => $primary_type,
+							'secondaryType' => $secondary_type,
 						)
 					),
 				)
@@ -549,12 +602,12 @@ class SiteGen {
 						);
 					} else {
 						return array(
-							'error' => __( 'We are unable to process the request at this moment' ),
+							'error' => __( 'We are unable to process the request at this moment', 'wp-module-ai' ),
 						);
 					}
 				} catch ( \Exception $exception ) {
 					return array(
-						'error' => __( 'We are unable to process the request at this moment' ),
+						'error' => __( 'We are unable to process the request at this moment', 'wp-module-ai' ),
 					);
 				}
 			}
@@ -770,23 +823,34 @@ class SiteGen {
 			}
 		}
 
+		// Site classification: primary and secondary types
+		$site_classification = self::get_sitegen_from_cache( 'siteclassification' );
+		$primary_type        = 'other';
+		$secondary_type      = 'other';
+		if ( is_array( $site_classification ) ) {
+			$primary_type   = $site_classification['primaryType'] ?? 'other';
+			$secondary_type = $site_classification['slug'] ?? 'other';
+		}
+
 		$response      = wp_remote_post(
-			NFD_AI_BASE . 'generatePageContent',
+			NFD_CONTENT_GENERATION_BASE . 'page',
 			array(
 				'headers' => array(
-					'Content-Type' => 'application/json',
+					'Content-Type'  => 'application/json',
+					'Authorization' => 'Bearer ' . HiiveConnection::get_auth_token(),
 				),
 				'timeout' => 60,
 				'body'    => wp_json_encode(
 					array(
-						'hiivetoken' => HiiveConnection::get_auth_token(),
-						'prompt'     => array(
+						'prompt'        => array(
 							'site_description' => $site_description,
+							'keywords'         => wp_json_encode( $keywords ),
 							'content_style'    => wp_json_encode( $content_style ),
 							'target_audience'  => wp_json_encode( $target_audience ),
 						),
-						'page'       => $page,
-						'keywords'   => wp_json_encode( $keywords ),
+						'page'          => $page,
+						'primaryType'   => $primary_type,
+						'secondaryType' => $secondary_type,
 					)
 				),
 			)
@@ -807,12 +871,12 @@ class SiteGen {
 					);
 				} else {
 					return array(
-						'error' => __( 'We are unable to process the request at this moment' ),
+						'error' => __( 'We are unable to process the request at this moment', 'wp-module-ai' ),
 					);
 				}
 			} catch ( \Exception $exception ) {
 				return array(
-					'error' => __( 'We are unable to process the request at this moment' ),
+					'error' => __( 'We are unable to process the request at this moment', 'wp-module-ai' ),
 				);
 			}
 		}
@@ -844,9 +908,11 @@ class SiteGen {
 	) {
 		if ( ! self::check_capabilities() ) {
 			return array(
-				'error' => __( 'You do not have the permissions to perform this action' ),
+				'error' => __( 'You do not have the permissions to perform this action', 'wp-module-ai' ),
 			);
 		}
+
+		$site_description = self::get_refined_site_description( $site_description );
 
 		$identifier = 'generatePages';
 

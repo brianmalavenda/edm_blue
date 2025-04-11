@@ -3,7 +3,7 @@ import { useState } from '@wordpress/element';
 
 // Newfold
 import { Spinner } from '@newfold/ui-component-library';
-import { NewfoldRuntime } from '@newfold-labs/wp-module-runtime';
+import { NewfoldRuntime } from '@newfold/wp-module-runtime';
 
 const InstallActivatePluginButton = ( {
 	methods,
@@ -21,7 +21,8 @@ const InstallActivatePluginButton = ( {
 		const apiUrl = methods.NewfoldRuntime.createApiUrl(
 			'/newfold-installer/v1/plugins/install'
 		);
-		const INSTALL_TOKEN = NewfoldRuntime.sdk.performance.install_token;
+		const INSTALL_TOKEN =
+			NewfoldRuntime.sdk?.jetpackboost.install_token || '';
 		const plugin = 'jetpack-boost';
 
 		try {
@@ -38,13 +39,14 @@ const InstallActivatePluginButton = ( {
 			setMessage( constants.text.jetpackBoostActivationFailed );
 		} finally {
 			setIsLoading( false );
+			window.location.reload();
 		}
 	};
 
 	return (
 		<div className="nfd-performance-jetpack-boost-container-install-activate-button">
 			<button
-				className="nfd-button--upsell"
+				className="nfd-button--upsell nfd-shadow-lg nfd-shadow-amber-700/30"
 				onClick={ handleInstallActivate }
 			>
 				{ isLoading ? (
