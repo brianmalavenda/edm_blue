@@ -35,9 +35,9 @@ global $href;
                         }
                         
                          //. $matches[1];
-                        if(preg_match('LN',$link,$matches)){
+                        if(preg_match('/LN/',$link,$matches)){
                             $nombre_logo = $matches;
-                            $link_logo = "https://hne.ctp.mybluehost.me/website_850e55e5/wp-content/uploads/2024/12/241223LN.docx";
+                            $link_logo = "https://hne.ctp.mybluehost.me/website_850e55e5/wp-content/uploads/2024/12/ln.jpg";
                         }
                         ?>
                         <img src="<?php echo esc_url($link_logo); ?>" class="card-img-top" alt="logo">
