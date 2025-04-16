@@ -36,7 +36,7 @@ global $href;
                         
                         if(preg_match('LN',$link,$matches)){
                             $nombre_logo = $matches;
-                            $link_logo = "https://hne.ctp.mybluehost.me/website_850e55e5/wp-content/uploads/2024/12/". $matches[1];
+                            $link_logo = "https://hne.ctp.mybluehost.me/website_850e55e5/wp-content/uploads/2024/12/241223LN.docx" //. $matches[1];
                         }
                         ?>
                         <img src="<?php echo esc_url($link_logo); ?>" class="card-img-top" alt="logo">
