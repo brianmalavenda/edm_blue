@@ -39,6 +39,10 @@ global $href;
                             $nombre_logo = $matches;
                             $link_logo = "https://hne.ctp.mybluehost.me/website_850e55e5/wp-content/uploads/2024/12/ln.jpg";
                         }
+                        if(preg_match('/P12/',$link,$matches)){
+                            $nombre_logo = $matches;
+                            $link_logo = "https://hne.ctp.mybluehost.me/website_850e55e5/wp-content/uploads/2025/04/p12.png";
+                        }
                         ?>
                         <img src="<?php echo esc_url($link_logo); ?>" class="card-img-top" alt="logo">
                         <div class="card-body">
