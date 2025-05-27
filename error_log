@@ -47,3 +47,80 @@ Stack trace:
 Stack trace:
 #0 {main}
   thrown in /home1/hnectpmy/public_html/wp-settings.php on line 33
+[17-Apr-2025 18:05:55 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function NewfoldLabs\WP\Module\Data\Listeners\wc_get_is_paid_statuses() in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php:86
+Stack trace:
+#0 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Commerce->orders_count(Array)
+#1 /home1/hnectpmy/public_html/wp-includes/plugin.php(205): WP_Hook->apply_filters(Array, Array)
+#2 /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Cron.php(49): apply_filters('newfold_wp_data...', Array)
+#3 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Cron->update()
+#4 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#5 /home1/hnectpmy/public_html/wp-includes/plugin.php(565): WP_Hook->do_action(Array)
+#6 /home1/hnectpmy/public_html/wp-cron.php(191): do_action_ref_array('nfd_data_cron', Array)
+#7 {main}
+  thrown in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php on line 86
+[24-Apr-2025 18:06:28 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function NewfoldLabs\WP\Module\Data\Listeners\wc_get_is_paid_statuses() in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php:86
+Stack trace:
+#0 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Commerce->orders_count(Array)
+#1 /home1/hnectpmy/public_html/wp-includes/plugin.php(205): WP_Hook->apply_filters(Array, Array)
+#2 /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Cron.php(49): apply_filters('newfold_wp_data...', Array)
+#3 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Cron->update()
+#4 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#5 /home1/hnectpmy/public_html/wp-includes/plugin.php(565): WP_Hook->do_action(Array)
+#6 /home1/hnectpmy/public_html/wp-cron.php(191): do_action_ref_array('nfd_data_cron', Array)
+#7 {main}
+  thrown in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php on line 86
+[01-May-2025 18:06:28 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function NewfoldLabs\WP\Module\Data\Listeners\wc_get_is_paid_statuses() in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php:86
+Stack trace:
+#0 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Commerce->orders_count(Array)
+#1 /home1/hnectpmy/public_html/wp-includes/plugin.php(205): WP_Hook->apply_filters(Array, Array)
+#2 /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Cron.php(49): apply_filters('newfold_wp_data...', Array)
+#3 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Cron->update()
+#4 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#5 /home1/hnectpmy/public_html/wp-includes/plugin.php(565): WP_Hook->do_action(Array)
+#6 /home1/hnectpmy/public_html/wp-cron.php(191): do_action_ref_array('nfd_data_cron', Array)
+#7 {main}
+  thrown in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php on line 86
+[08-May-2025 18:48:12 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function NewfoldLabs\WP\Module\Data\Listeners\wc_get_is_paid_statuses() in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php:86
+Stack trace:
+#0 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Commerce->orders_count(Array)
+#1 /home1/hnectpmy/public_html/wp-includes/plugin.php(205): WP_Hook->apply_filters(Array, Array)
+#2 /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Cron.php(49): apply_filters('newfold_wp_data...', Array)
+#3 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Cron->update()
+#4 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#5 /home1/hnectpmy/public_html/wp-includes/plugin.php(565): WP_Hook->do_action(Array)
+#6 /home1/hnectpmy/public_html/wp-cron.php(191): do_action_ref_array('nfd_data_cron', Array)
+#7 {main}
+  thrown in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php on line 86
+[15-May-2025 04:29:28 UTC] Cron reschedule event error for hook: nfd_data_sync_cron, Error code: could_not_set, Error message: The cron event list could not be saved., Data: {"schedule":"minutely","args":[],"interval":60}
+[15-May-2025 04:29:28 UTC] Cron unschedule event error for hook: nfd_data_sync_cron, Error code: could_not_set, Error message: The cron event list could not be saved., Data: {"schedule":"minutely","args":[],"interval":60}
+[15-May-2025 04:29:28 UTC] Cron reschedule event error for hook: jetpack_sync_cron, Error code: could_not_set, Error message: The cron event list could not be saved., Data: {"schedule":"jetpack_sync_interval","args":[],"interval":300}
+[15-May-2025 04:29:28 UTC] Cron unschedule event error for hook: jetpack_sync_cron, Error code: could_not_set, Error message: The cron event list could not be saved., Data: {"schedule":"jetpack_sync_interval","args":[],"interval":300}
+[15-May-2025 18:31:27 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function NewfoldLabs\WP\Module\Data\Listeners\wc_get_is_paid_statuses() in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php:86
+Stack trace:
+#0 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Commerce->orders_count(Array)
+#1 /home1/hnectpmy/public_html/wp-includes/plugin.php(205): WP_Hook->apply_filters(Array, Array)
+#2 /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Cron.php(49): apply_filters('newfold_wp_data...', Array)
+#3 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Cron->update()
+#4 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#5 /home1/hnectpmy/public_html/wp-includes/plugin.php(565): WP_Hook->do_action(Array)
+#6 /home1/hnectpmy/public_html/wp-cron.php(191): do_action_ref_array('nfd_data_cron', Array)
+#7 {main}
+  thrown in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php on line 86
+[22-May-2025 20:25:58 UTC] PHP Fatal error:  Uncaught Error: Call to undefined function NewfoldLabs\WP\Module\Data\Listeners\wc_get_is_paid_statuses() in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php:86
+Stack trace:
+#0 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Commerce->orders_count(Array)
+#1 /home1/hnectpmy/public_html/wp-includes/plugin.php(205): WP_Hook->apply_filters(Array, Array)
+#2 /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Cron.php(49): apply_filters('newfold_wp_data...', Array)
+#3 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(324): NewfoldLabs\WP\Module\Data\Listeners\Cron->update()
+#4 /home1/hnectpmy/public_html/wp-includes/class-wp-hook.php(348): WP_Hook->apply_filters('', Array)
+#5 /home1/hnectpmy/public_html/wp-includes/plugin.php(565): WP_Hook->do_action(Array)
+#6 /home1/hnectpmy/public_html/wp-cron.php(191): do_action_ref_array('nfd_data_cron', Array)
+#7 {main}
+  thrown in /home1/hnectpmy/public_html/wp-content/plugins/bluehost-wordpress-plugin/vendor/newfold-labs/wp-module-data/includes/Listeners/Commerce.php on line 86
+[27-May-2025 12:06:23 UTC] PHP Warning:  Attempt to read property "id" on null in /home1/hnectpmy/public_html/wp-content/plugins/yith-stripe-payments-for-woocommerce-extended/includes/models/class-customer.php on line 211
+[27-May-2025 12:06:23 UTC] PHP Warning:  Attempt to read property "id" on null in /home1/hnectpmy/public_html/wp-content/plugins/yith-stripe-payments-for-woocommerce-extended/includes/models/class-customer.php on line 214
+[27-May-2025 12:06:43 UTC] PHP Warning:  Attempt to read property "id" on null in /home1/hnectpmy/public_html/wp-content/plugins/yith-stripe-payments-for-woocommerce-extended/includes/models/class-customer.php on line 211
+[27-May-2025 12:06:43 UTC] PHP Warning:  Attempt to read property "id" on null in /home1/hnectpmy/public_html/wp-content/plugins/yith-stripe-payments-for-woocommerce-extended/includes/models/class-customer.php on line 214
+[27-May-2025 12:10:54 UTC] PHP Warning:  Attempt to read property "id" on null in /home1/hnectpmy/public_html/wp-content/plugins/yith-stripe-payments-for-woocommerce-extended/includes/models/class-customer.php on line 211
+[27-May-2025 12:10:54 UTC] PHP Warning:  Attempt to read property "id" on null in /home1/hnectpmy/public_html/wp-content/plugins/yith-stripe-payments-for-woocommerce-extended/includes/models/class-customer.php on line 214
+[27-May-2025 12:13:51 UTC] product_type was called incorrectly. Product properties should not be accessed directly. Backtrace: require('wp-blog-header.php'), wp, WP->main, WP->parse_request, do_action_ref_array('parse_request'), WP_Hook->do_action, WP_Hook->apply_filters, rest_api_loaded, WP_REST_Server->serve_request, WP_REST_Server->dispatch, WP_REST_Server->respond_to_request, Automattic\WooCommerce\Admin\API\OnboardingTasks::create_product_from_template, WC_Product->save, WC_Data_Store->update, WC_Product_Data_Store_CPT->update, do_action('woocommerce_update_product'), WP_Hook->do_action, WP_Hook->apply_filters, NewfoldLabs\WP\Module\Data\Listeners\Commerce->product_created_or_updated, WC_Abstract_Legacy_Product->__get, wc_doing_it_wrong. This message was added in version 3.0.
