@@ -91,6 +91,8 @@ define('WP_AUTO_UPDATE_CORE', true);
  * @link https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/
  */
 define( 'WP_DEBUG', false );
+@ini_set('max_execution_time', 2000);
+@ini_set('max_input_time', 2000);
 
 /* Add any custom values between this line and the "stop editing" line. */
 
