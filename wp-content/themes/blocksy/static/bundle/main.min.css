@@ -2089,13 +2089,13 @@ form:is(.login, .register, .edit-account, .lost_reset_password) [class*=password
     width: var(--theme-block-width)
 } */
 
-.ct-featured-image:not(.alignwide):not(.alignfull) {
+/* .ct-featured-image:not(.alignwide):not(.alignfull) {
     max-width: var(--theme-block-max-width)
-}
+} */
 
-.ct-featured-image.alignwide {
+/* .ct-featured-image.alignwide {
     max-width: var(--theme-block-wide-max-width)
-}
+} */
 
 @media(max-width: 999.98px) {
     .ct-featured-image {
