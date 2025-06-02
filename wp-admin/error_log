@@ -85,3 +85,4 @@ Stack trace:
 #10 /home1/hnectpmy/public_html/wp-admin/admin-ajax.php(192): do_action('wp_ajax_blocksy...')
 #11 {main}
   thrown in /home1/hnectpmy/public_html/wp-content/plugins/woocommerce/includes/class-wc-regenerate-images.php on line 454
+[02-Jun-2025 10:55:16 UTC] WordPress database error Table 'hnectpmy_WPOFQ.ejA_xyz_ips_short_code' doesn't exist for query SELECT * FROM ejA_xyz_ips_short_code WHERE insertionMethod = 1 AND status = 1 made by activate_plugin, plugin_sandbox_scrape, include_once('/plugins/insert-php-code-snippet/insert-php-code-snippet.php'), require('/plugins/insert-php-code-snippet/shortcode-handler.php')

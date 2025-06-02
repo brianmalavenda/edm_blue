@@ -69,6 +69,7 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /website_34647a28/index.php [L]
 </IfModule>
 # END WordPress
+
 # php -- BEGIN cPanel-generated handler, do not edit
 # Set the “ea-php83” package as the default “PHP” programming language.
 <IfModule mime_module>
